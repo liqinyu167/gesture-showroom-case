@@ -1,58 +1,81 @@
-# AliSpawn Gesture Showroom Case
+# 手势互动展厅案例
 
-Unity gesture-interaction showroom case extracted from `MediaPipeCameraRouteTest.unity`.
+这是一个基于 Unity 和 MediaPipe 的手势互动展厅案例，核心场景来自 `MediaPipeCameraRouteTest.unity`。项目展示了如何用摄像头识别手部姿态，并把屏幕空间坐标与捏合程度映射到展厅内容点击、悬停、观察和镜头路线切换等交互中。
 
-This repository keeps the scene, custom interaction scripts, and lightweight runtime assets needed to study the implementation. Large third-party binaries and marketplace art assets are intentionally excluded so the case can be shared safely.
+![交互原理图](docs/interaction-principle.png)
 
-![Interaction principle](docs/interaction-principle.png)
+## 直接下载运行
 
-## Download release
+如果只是想打开案例体验，请到 Release 下载完整项目包：
 
-For non-developers or Unity users who just want to run the case, download the release asset:
+- [alispawn-gesture-showroom-full-project.zip](https://github.com/liqinyu167/gesture-showroom-case/releases/download/v1.0.0/alispawn-gesture-showroom-full-project.zip)
+  - 完整 Unity 项目包。
+  - 包含场景、MediaPipe 嵌入包和场景所需资源。
+  - 下载后解压，用 Unity 打开项目文件夹即可。
+- [alispawn-gesture-showroom-source.zip](https://github.com/liqinyu167/gesture-showroom-case/releases/download/v1.0.0/alispawn-gesture-showroom-source.zip)
+  - 轻量源码包。
+  - 适合查看脚本、交互结构和二次开发参考。
 
-- `alispawn-gesture-showroom-full-project.zip`: full Unity project, including embedded MediaPipe package and scene assets. Unzip it and open the folder with Unity.
-- `alispawn-gesture-showroom-source.zip`: lightweight source package for code review and reuse.
+Release 页面：
 
-## Scene
+[v1.0.0 Gesture Showroom Case](https://github.com/liqinyu167/gesture-showroom-case/releases/tag/v1.0.0)
 
-- Main scene: `Assets/Scenes/MediaPipeCameraRouteTest.unity`
-- Unity version: `2022.3.62f2c1`
-- Core scripts: `Assets/Scripts`
+## Unity 打开方式
 
-## What is included
+1. 下载 `alispawn-gesture-showroom-full-project.zip`。
+2. 解压到本地目录。
+3. 使用 Unity `2022.3.62f2c1` 或兼容的 Unity 2022.3 LTS 版本打开解压后的项目文件夹。
+4. 打开主场景：
 
-- Camera route control and debug scrubbing.
-- MediaPipe hand-input adapter and hand tracking manager integration.
-- Pinch/cursor interaction logic for showroom items.
-- Fungus bridge command for observation flow events.
-- Scene lightmap data and small project settings required by Unity.
-- Fungus, DOTween, MediaPipe sample UI scripts, and selected TextMesh Pro font assets already used by the scene.
+   `Assets/Scenes/MediaPipeCameraRouteTest.unity`
 
-## External dependencies
+5. 运行场景，确保摄像头权限可用。
 
-Before opening the scene in a fresh clone, restore these dependencies:
+## 项目内容
 
-- MediaPipe Unity Plugin `com.github.homuler.mediapipe` version `0.16.3`.
-  - In the source project it lived under `Packages/com.github.homuler.mediapipe`.
-  - It is not committed here because the embedded package is about 389 MB and contains third-party binaries.
-- Unity packages from `Packages/manifest.json`, especially URP, Cinemachine, TextMesh Pro, Unity UI, and Timeline.
-- Marketplace/gallery art referenced by the scene, especially `AK Studio Art / Simple VR Gallery`, if you want the exact original showroom visuals.
+- 主场景：`Assets/Scenes/MediaPipeCameraRouteTest.unity`
+- Unity 版本：`2022.3.62f2c1`
+- 核心脚本：`Assets/Scripts`
+- 交互原理图：`docs/interaction-principle.png`
 
-## Open in Unity
+## 核心功能
 
-1. Clone the repository.
-2. Install Unity `2022.3.62f2c1` or another compatible Unity 2022.3 LTS editor.
-3. Restore `com.github.homuler.mediapipe` into `Packages/com.github.homuler.mediapipe`, or install the same plugin version through your preferred workflow.
-4. Open the project folder in Unity.
-5. Open `Assets/Scenes/MediaPipeCameraRouteTest.unity`.
+- 摄像头图像输入。
+- MediaPipe 手部识别。
+- 输出屏幕空间坐标 `(x, y)`。
+- 输出捏合程度 `pinch`，用于模拟点击。
+- 展厅内容 hover、focus、click、observe 等交互。
+- 镜头路线节点切换与调试滑杆。
+- Fungus 事件桥接，用于展厅观察流程。
 
-Some referenced art prefabs/materials may appear missing until the gallery art package is restored. The custom source code and interaction flow remain available for review.
+## 交互流程
 
-## Case focus
+1. 摄像头采集手部画面。
+2. MediaPipe 识别手部关键点和手势状态。
+3. `HandTrackingManagerV2` 计算屏幕坐标、手势状态和捏合程度。
+4. `HandInputAdapter` 把手势输入转换为展厅交互层可用的数据。
+5. `ShowroomInteractionManager`、`ShowroomCursor`、`InteractableItem` 等脚本处理悬停、点击和内容观察。
+6. `CameraRouteController` 与 `CameraRouteNode` 控制展厅中的镜头路线跳转。
 
-The case demonstrates a camera-routed exhibition hall controlled by hand gestures:
+## 仓库源码说明
 
-- MediaPipe detects hand landmarks and gesture state.
-- `HandInputAdapter` normalizes input for the showroom interaction layer.
-- `ShowroomInteractionManager`, `ShowroomCursor`, `InteractableItem`, and related scripts map gesture intent to hover, pinch, focus, and observation behavior.
-- `CameraRouteController` and `CameraRouteNode` drive route-based viewpoint transitions inside the showroom.
+仓库主体保留了案例源码、场景、交互脚本和文档。为了让 Git 仓库更适合浏览与维护，完整大体积运行包放在 GitHub Release 中。
+
+如果你直接 clone 仓库而不是下载 Release 完整包，可能需要自行恢复部分依赖：
+
+- MediaPipe Unity Plugin `com.github.homuler.mediapipe` `0.16.3`
+- Unity Package Manager 中的 URP、Cinemachine、TextMesh Pro、Unity UI、Timeline 等依赖
+- 场景引用的展厅美术资源，例如 `AK Studio Art / Simple VR Gallery`
+
+更推荐运行体验者下载 Release 中的完整项目包。
+
+## 适用场景
+
+这个案例可作为以下方向的参考：
+
+- 展厅 / 展览 / 大屏互动
+- 摄像头手势识别交互
+- MediaPipe 与 Unity 结合
+- 无接触点击与悬停交互
+- 基于路线节点的展厅镜头控制
+
