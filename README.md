@@ -4,6 +4,15 @@ Unity gesture-interaction showroom case extracted from `MediaPipeCameraRouteTest
 
 This repository keeps the scene, custom interaction scripts, and lightweight runtime assets needed to study the implementation. Large third-party binaries and marketplace art assets are intentionally excluded so the case can be shared safely.
 
+![Interaction principle](docs/interaction-principle.png)
+
+## Download release
+
+For non-developers or Unity users who just want to run the case, download the release asset:
+
+- `alispawn-gesture-showroom-full-project.zip`: full Unity project, including embedded MediaPipe package and scene assets. Unzip it and open the folder with Unity.
+- `alispawn-gesture-showroom-source.zip`: lightweight source package for code review and reuse.
+
 ## Scene
 
 - Main scene: `Assets/Scenes/MediaPipeCameraRouteTest.unity`
@@ -47,4 +56,3 @@ The case demonstrates a camera-routed exhibition hall controlled by hand gesture
 - `HandInputAdapter` normalizes input for the showroom interaction layer.
 - `ShowroomInteractionManager`, `ShowroomCursor`, `InteractableItem`, and related scripts map gesture intent to hover, pinch, focus, and observation behavior.
 - `CameraRouteController` and `CameraRouteNode` drive route-based viewpoint transitions inside the showroom.
-
